@@ -8,33 +8,45 @@ const AppProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
-    const createSession = async () => {
-      const sessionId = localStorage.getItem("sessionId");
-      if (!sessionId) {
-        const sessionId = await API.createSession();
-        localStorage.setItem("sessionId", sessionId);
-      }
-    };
-
-    const initializeProducts = async () => {
-      try {
-        const productsData = await API.listProducts();
-        setProducts(productsData);
-      } catch (error) {
-        console.error(`Initializing products failed: ${error.message}`);
-      }
-    };
-
     createSession();
     initializeProducts();
+    getCartItems();
   }, []);
 
-  const addToCart = () => {
-    console.log("add to cart");
+  const addToCart = async (productId) => {
+    await API.addToCart(productId);
+    await getCartItems();
   };
 
-  const subtractFromCart = () => {
-    console.log("subtract from cart");
+  const subtractFromCart = async (productId) => {
+    await API.subtractFromCart(productId);
+    await getCartItems();
+  };
+
+  const createSession = async () => {
+    const sessionId = localStorage.getItem("sessionId");
+    if (!sessionId) {
+      const sessionId = await API.createSession();
+      localStorage.setItem("sessionId", sessionId);
+    }
+  };
+
+  const initializeProducts = async () => {
+    try {
+      const productsData = await API.listProducts();
+      setProducts(productsData);
+    } catch (error) {
+      console.error(`Initializing products failed: ${error.message}`);
+    }
+  };
+
+  const getCartItems = async () => {
+    try {
+      const cartItems = await API.viewCart();
+      setCartItems(cartItems);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
