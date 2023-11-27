@@ -8,6 +8,14 @@ const AppProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
+    const createSession = async () => {
+      const sessionId = localStorage.getItem("sessionId");
+      if (!sessionId) {
+        const sessionId = await API.createSession();
+        localStorage.setItem("sessionId", sessionId);
+      }
+    };
+
     const initializeProducts = async () => {
       try {
         const productsData = await API.listProducts();
@@ -17,6 +25,7 @@ const AppProvider = ({ children }) => {
       }
     };
 
+    createSession();
     initializeProducts();
   }, []);
 
