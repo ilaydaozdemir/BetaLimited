@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Rating from "@mui/material/Rating";
 import { BsPlusSquare } from "react-icons/bs";
 import { BsDashSquare } from "react-icons/bs";
@@ -9,12 +9,31 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/material";
 
+import { AppContext } from "../AppContext";
+
 const ProductCard = ({ product }) => {
-  const [value, setValue] = useState("");
+  const [quantity, setQuantity] = useState(0);
+  const { cartItems, addToCart, subtractFromCart } = useContext(AppContext);
 
-  const incrementProduct = () => {};
+  useEffect(() => {
+    function isProduct(item) {
+      return item.productId === product.id;
+    }
+    const cartItem = cartItems.find(isProduct);
 
-  const decrementProduct = () => {};
+    if (cartItem) {
+      setQuantity(cartItem.quantity);
+    }
+  }, [JSON.stringify(cartItems), product]);
+
+  const incrementProduct = async () => {
+    addToCart(product.id);
+  };
+
+  const decrementProduct = async () => {
+    subtractFromCart(product.id);
+  };
+
   return (
     <div>
       <Card
@@ -68,9 +87,6 @@ const ProductCard = ({ product }) => {
                         name="simple-controlled"
                         size="small"
                         value={product.rating}
-                        onChange={(event, newValue) => {
-                          setValue(newValue);
-                        }}
                       />
                     </Stack>
                     <div>
@@ -116,6 +132,20 @@ const ProductCard = ({ product }) => {
                     onClick={incrementProduct}
                   />
                 </div>
+                {quantity ? (
+                  <div>
+                    <Typography>{quantity}</Typography>
+                  </div>
+                ) : null}
+                {quantity ? (
+                  <div>
+                    <BsDashSquare
+                      size={24}
+                      color="#bb656c"
+                      onClick={decrementProduct}
+                    />
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
