@@ -19,10 +19,12 @@ const ProductCard = ({ product }) => {
     function isProduct(item) {
       return item.productId === product.id;
     }
-    const cartItem = cartItems.find(isProduct);
+    if (cartItems && cartItems.length) {
+      const cartItem = cartItems.find(isProduct);
 
-    if (cartItem) {
-      setQuantity(cartItem.quantity);
+      if (cartItem) {
+        setQuantity(cartItem.quantity);
+      }
     }
   }, [JSON.stringify(cartItems), product]);
 
