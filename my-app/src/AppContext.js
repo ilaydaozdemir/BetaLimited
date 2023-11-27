@@ -6,6 +6,7 @@ const AppContext = createContext();
 const AppProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [searchResults, setSearchResults] = useState(null);
 
   useEffect(() => {
     createSession();
@@ -49,9 +50,25 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  const searchProduct = async (name) => {
+    try {
+      const results = await API.searchProduct(name);
+      setSearchResults(results);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <AppContext.Provider
-      value={{ products, cartItems, addToCart, subtractFromCart }}
+      value={{
+        products,
+        cartItems,
+        addToCart,
+        subtractFromCart,
+        searchProduct,
+        searchResults,
+      }}
     >
       {children}
     </AppContext.Provider>

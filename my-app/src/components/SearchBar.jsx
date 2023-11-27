@@ -1,27 +1,18 @@
-import React from "react";
-import Paper from "@mui/material/Paper";
+import React, { useContext, useState } from "react";
 import InputBase from "@mui/material/InputBase";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import DirectionsIcon from "@mui/icons-material/Directions";
 import { Grid } from "@mui/material";
-const useStyle = {
-  IconButton: {
-    backgroundColor: "#C24B5A !important",
+import { AppContext } from "../AppContext";
 
-    borderRadius: "0",
-    borderTopRightRadius: "20px",
-    borderBottomRightRadius: "20px",
-    width: "160px",
-    "&:hover": {
-      backgroundColor: "#C24B5A !important",
-      boxShadow: "none !important",
-    },
-  },
-};
 const SearchBar = () => {
+  const [name, setName] = useState("");
+  const { searchProduct } = useContext(AppContext);
+
+  const search = () => {
+    searchProduct(name);
+  };
+
   return (
     <Grid
       container
@@ -44,12 +35,21 @@ const SearchBar = () => {
         </IconButton>
       </Grid>
       <Grid item xs>
-        <InputBase sx={{ flex: 1 }} placeholder="Searching for ..." />
+        <InputBase
+          sx={{ flex: 1 }}
+          placeholder="Searching for ..."
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
       </Grid>
 
       <Grid item>
-        <IconButton type="button" sx={useStyle.IconButton} aria-label="search">
-          {" "}
+        <IconButton
+          type="button"
+          sx={useStyle.IconButton}
+          aria-label="search"
+          onClick={search}
+        >
           <span style={{ fontSize: "16px", color: "white", padding: "8px" }}>
             Search
           </span>
@@ -58,4 +58,19 @@ const SearchBar = () => {
     </Grid>
   );
 };
+
 export default SearchBar;
+
+const useStyle = {
+  IconButton: {
+    backgroundColor: "#C24B5A !important",
+    borderRadius: "0",
+    borderTopRightRadius: "20px",
+    borderBottomRightRadius: "20px",
+    width: "160px",
+    "&:hover": {
+      backgroundColor: "#C24B5A !important",
+      boxShadow: "none !important",
+    },
+  },
+};
