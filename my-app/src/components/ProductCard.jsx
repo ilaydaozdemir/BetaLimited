@@ -4,12 +4,12 @@ import { BsPlusSquare } from "react-icons/bs";
 import { BsDashSquare } from "react-icons/bs";
 
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/material";
-const ProductCard = () => {
+
+const ProductCard = ({ product }) => {
   const [value, setValue] = useState("");
 
   const incrementProduct = () => {};
@@ -17,7 +17,6 @@ const ProductCard = () => {
   const decrementProduct = () => {};
   return (
     <div>
-      {" "}
       <Card
         sx={{
           height: "100%",
@@ -31,7 +30,7 @@ const ProductCard = () => {
             // 16:9
             pt: "90.25%",
           }}
-          image="https://source.unsplash.com/random?wallpapers"
+          image={product.image}
         />
         <CardContent sx={{ flexGrow: 1 }}>
           <div>
@@ -49,7 +48,7 @@ const ProductCard = () => {
                     color: "#6c6f79",
                   }}
                 >
-                  Offer fruits
+                  {product.name}
                 </Typography>
 
                 <div>
@@ -68,13 +67,15 @@ const ProductCard = () => {
                       <Rating
                         name="simple-controlled"
                         size="small"
-                        value={value}
+                        value={product.rating}
                         onChange={(event, newValue) => {
                           setValue(newValue);
                         }}
                       />
                     </Stack>
-                    <div> {value ? <span>({value})</span> : <></>}</div>
+                    <div>
+                      {product.rating ? <span>({product.rating})</span> : <></>}
+                    </div>
                   </div>
                 </div>
                 <div
@@ -82,16 +83,20 @@ const ProductCard = () => {
                     display: "flex",
                   }}
                 >
-                  <Typography sx={{ color: "#ba6269", marginRight: "8px" }}>
-                    1223
+                  <Typography
+                    className="price"
+                    sx={{ color: "#ba6269", marginRight: "8px" }}
+                  >
+                    ${product.price}
                   </Typography>
                   <Typography
+                    className="originalPrice"
                     sx={{
                       color: "#a9adb5",
                       textDecorationLine: "line-through",
                     }}
                   >
-                    1223
+                    ${product.originalPrice}
                   </Typography>
                 </div>
               </div>
