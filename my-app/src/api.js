@@ -74,3 +74,14 @@ export const subtractFromCart = async (productId) => {
     throw new Error(message);
   }
 };
+
+export const searchProduct = async (name) => {
+  try {
+    const response = await fetch(`${BASE_URL}/search?name=${name}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    const message = `Could not search product: ${error}`;
+    throw new Error(message);
+  }
+};
